@@ -22,7 +22,7 @@ def root():
 
 
 @app.route('/api/predict_gesture', methods=[ 'POST' ])
-def predict_gesture():
+def api_predict_gesture():
 	pose_frames = request.get_json()
 	if(pose_frames == None):
 		return "ERROR reading json data from request"
