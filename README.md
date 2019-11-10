@@ -21,7 +21,7 @@ https://github.com/prashanthnetizen/posenet_nodejs_setup
 		<pre>git clone https://github.com/tnasim/cse535-2019F-A2.git</pre>
 	</li>
 	<li>Go to the downoad directory: <br/>
-		<pre>cd cse535-2019F-A2<pre>
+		<pre>cd cse535-2019F-A2</pre>
 	</li>
 	<li>Build the docker image (notice the dot, '.', at the end): <br/>
 		<pre>docker build -t myserver .</pre>
