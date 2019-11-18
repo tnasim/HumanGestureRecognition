@@ -30,7 +30,9 @@ from operator import itemgetter
 def read_data_all(strlist):
     all_data = {}
     for str in strlist:
-        path = r'/home/local/ASUAD/tnasim/Documents/Courses/CSE 535/Assignments/Assignment2/CSV/' + str
+        path = r"C:\Users\smousav9\Dropbox (ASU)\Semester 5- Fall 2019- Starting August 22th\CSE 535_Mobile Computing\CSE 535- Assignment2\CSV_data_Tuesday\\" + str
+        # path = r"D:\Dropbox (ASU)\Semester 5- Fall 2019- Starting August 22th\CSE 535_Mobile Computing\CSE 535- Assignment2\CSV_data_Tuesday\\" + str
+        # path = r'/home/local/ASUAD/tnasim/Documents/Courses/CSE 535/Assignments/Assignment2/CSV/' + str
         all_files = glob.glob(path + "/*.csv")
         data_dict = {}
         for i, filename in enumerate(all_files):
@@ -194,8 +196,8 @@ def classifier_init():
     RadiusNeighClass = RadiusNeighborsClassifier(radius=50.0, weights='distance', algorithm='auto', leaf_size=30, p=6, metric='minkowski',
         outlier_label=0, metric_params=None, n_jobs=None)
 
-    classifiers = [LogReg, KneighberC, svm, Nusvm, DTC, QDA, LDA, GradBoostC, GaussianProcClass, MLPC, RndForC, RadiusNeighClass]
-    # classifiers = [LogReg, KneighberC]
+    # classifiers = [LogReg, KneighberC, svm, Nusvm, DTC, QDA, LDA, GradBoostC, GaussianProcClass, MLPC, RndForC, RadiusNeighClass]
+    classifiers = [LogReg, KneighberC, svm, Nusvm]
     return classifiers
 
 def train_ML_models():
@@ -254,7 +256,7 @@ def train_ML_models():
 
 if __name__ == '__main__':
     train_flag = 1
-    if train_flag ==1:
+    if train_flag == 1:
         trained_models, scal = train_ML_models()
     else:
         filename = 'trained_models.sav'

@@ -78,8 +78,8 @@ def predict_gesture(json_object):
 	predictions = {}
 	for i, name in enumerate(trained_models_loaded.keys()):
 		y_pred = trained_models_loaded[name].predict(x_test)
-		predictions[i] = label_dict[y_pred[0]]
-		print "y_pred[0] = ", y_pred[0], " ",  name, " ",  predictions[i]
+		predictions[str(i+1)] = label_dict[y_pred[0]]
+		print "y_pred[0] = ", y_pred[0], " ",  name, " ", predictions[str(i+1)]
 	return predictions
 
 
