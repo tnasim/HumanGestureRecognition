@@ -32,6 +32,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from operator import itemgetter
 
+models = {}
+
 def read_test_data(data): # only one sample
 	columns = ['score_overall', 'nose_score', 'nose_x', 'nose_y', 'leftEye_score', 'leftEye_x', 'leftEye_y',
 			   'rightEye_score', 'rightEye_x', 'rightEye_y', 'leftEar_score', 'leftEar_x', 'leftEar_y',
@@ -72,10 +74,12 @@ def predict_gesture(json_object):
 	test_case = read_test_data(json_object)
 	x_test = feature_test(test_case)
 	x_test = scaler_loaded.transform(x_test)
+	label_dict = {0: 'buy', 1: 'communicate', 2: 'fun', 3: 'hope', 4: 'mother', 5: 'really'}
 	predictions = {}
-	for name in trained_models_loaded.keys():
+	for i, name in enumerate(trained_models_loaded.keys()):
 		y_pred = trained_models_loaded[name].predict(x_test)
-		predictions["name"] = y_pred
+		predictions[i] = label_dict[y_pred[0]]
+		print "y_pred[0] = ", y_pred[0], " ",  name, " ",  predictions[i]
 	return predictions
 
 
