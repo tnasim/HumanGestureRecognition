@@ -27,7 +27,7 @@ https://github.com/prashanthnetizen/posenet_nodejs_setup
 		<pre>docker build -t myserver .</pre>
 	</li>
 	<li>Run the docker image just created: <br/>
-		<pre>docker run -ti --rm 5000:5000 myserver python3 app.py</pre>
+		<pre>docker run -ti --rm -p 5000:5000 myserver python3 app.py</pre>
 	</li>
 	<li>Check if the server is running on browser: <br/>
 		http://{your-server-url}:5000/ <br/>
