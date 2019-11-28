@@ -58,12 +58,17 @@ def read_test_data(data): # only one sample
 
 def feature_test(test_case):
 	y = fft(test_case, axis=0)
-	fftpeak = np.round(np.max(abs(y),axis=0), 3)
+	y_sorted = np.sort(abs(y), axis=0)
+	fftpeak1 = np.round(y_sorted[1, :], 3)
+	fftpeak2 = np.round(y_sorted[2, :], 3)
 	sd_temp = np.round(np.std(test_case.to_numpy(), axis=0), 3)
-	# print(stdfeature.isnull().sum().sum())
 	ave_temp = np.round(np.mean(test_case.to_numpy(), axis=0), 3)
-	data_temp = np.concatenate((fftpeak, sd_temp, ave_temp), axis=0)
-	data = data_temp.reshape(1, len(data_temp))
+	fea_temp1 = np.append(fftpeak1, fftpeak2)
+	fea_temp2 = np.append(sd_temp, ave_temp)
+	fea_temp = np.append(fea_temp1, fea_temp2).reshape(1,-1)
+	print(fea_temp.shape)
+	# data = data_temp.reshape(1, len(data_temp))
+	data = fea_temp
 	return data  # the format of data is a nparray
 	
 def predict_gesture(json_object):

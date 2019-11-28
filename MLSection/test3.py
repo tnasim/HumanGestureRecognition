@@ -103,32 +103,24 @@ def apply_to_dict(data_dict):
 # To create a feature matrix for each category buy, communicate, ...
 
 def feature_category(data_used_featurecreate):
-    str='_fft'
-    fftcolumnheader = [s+str for s in data_used_featurecreate[1].columns.tolist()]
-    fftfeature = pd.DataFrame(columns=fftcolumnheader)
-
-    str='_std'
-    stdcolumnheader = [s+str for s in data_used_featurecreate[1].columns.tolist()]
-    stdfeature = pd.DataFrame(columns=stdcolumnheader)
-
-    str='_ave'
-    avecolumnheader = [s+str for s in data_used_featurecreate[1].columns.tolist()]
-    avefeature = pd.DataFrame(columns=avecolumnheader)
+    fft1columnheader = [s+'_fft1' for s in data_used_featurecreate[1].columns.tolist()]
+    fft2columnheader = [s+'_fft2' for s in data_used_featurecreate[1].columns.tolist()]
+    stdcolumnheader = [s+'_std' for s in data_used_featurecreate[1].columns.tolist()]
+    avecolumnheader = [s+'_ave' for s in data_used_featurecreate[1].columns.tolist()]
+    columnlist = fft1columnheader + fft2columnheader + stdcolumnheader + avecolumnheader
+    result = pd.DataFrame(columns=columnlist)
     for ky in data_used_featurecreate.keys():
-        # fft transform
         y = fft(data_used_featurecreate[ky], axis=0)
-        fftpeak = np.round(np.max(abs(y),axis=0),3)
-        fftfeature.loc[ky, :] = fftpeak
-        # std of data
+        y_sorted = np.sort(abs(y), axis=0)
+        fftpeak1 = np.round(y_sorted[1, :], 3)
+        fftpeak2 = np.round(y_sorted[2, :], 3)
         sd_temp = np.round(np.std(data_used_featurecreate[ky].to_numpy(), axis=0), 3)
-        stdfeature.loc[ky, :] = sd_temp
-        # print(stdfeature.isnull().sum().sum())
         ave_temp = np.round(np.mean(data_used_featurecreate[ky].to_numpy(), axis=0), 3)
-        avefeature.loc[ky, :] = ave_temp
-        # print(avefeature.isnull().sum().sum())
-
-    result = pd.concat([fftfeature, stdfeature, avefeature], axis=1)
-
+        fea_temp1 = np.append(fftpeak1, fftpeak2)
+        fea_temp2 = np.append(sd_temp, ave_temp)
+        fea_temp = np.append(fea_temp1, fea_temp2)
+        result.loc[ky,:] = fea_temp
+    #     print(result.isnull().sum().sum())
     return result
 
 def feature_test(test_case):
@@ -196,8 +188,8 @@ def classifier_init():
     RadiusNeighClass = RadiusNeighborsClassifier(radius=50.0, weights='distance', algorithm='auto', leaf_size=30, p=6, metric='minkowski',
         outlier_label=0, metric_params=None, n_jobs=None)
 
-    # classifiers = [LogReg, KneighberC, svm, Nusvm, DTC, QDA, LDA, GradBoostC, GaussianProcClass, MLPC, RndForC, RadiusNeighClass]
-    classifiers = [LogReg, KneighberC, svm, Nusvm]
+    classifiers = [LogReg, KneighberC, svm, Nusvm, DTC, QDA, LDA, GradBoostC, GaussianProcClass, MLPC, RndForC, RadiusNeighClass]
+    # classifiers = [LogReg, Nusvm, RndForC, DTC]
     return classifiers
 
 def train_ML_models():
@@ -258,6 +250,7 @@ if __name__ == '__main__':
     train_flag = 1
     if train_flag == 1:
         trained_models, scal = train_ML_models()
+
     else:
         filename = 'trained_models.sav'
         trained_models_loaded = pickle.load(open(filename, 'rb'))
